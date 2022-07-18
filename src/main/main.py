@@ -25,6 +25,7 @@ scheduler = BackgroundScheduler(timezone=timezone)
 
 def check_for_imports():
     logger.info(f'Checking for new ebooks in {IMPORT_DIR}')
+    os.makedirs(IMPORT_DIR, exist_ok=True)
     for mobi_path in glob.glob(f'{IMPORT_DIR}/**/*.mobi', recursive=True):
         logger.info(f'Found new ebook: {mobi_path}')
         with MobiReader(mobi_path) as reader:
@@ -66,7 +67,7 @@ ACTIONS = [
 ]
 
 check_for_imports()
-scheduler.add_job(check_for_imports, 'interval', seconds=30)
+scheduler.add_job(check_for_imports, 'interval', seconds=config['refresh-interval-seconds'])
 scheduler.start()
 server = http_server(PORT, ACTIONS)
 try:
