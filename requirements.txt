@@ -1,0 +1,4 @@
+actions_server~=0.0.7
+service-bootstrap~=0.0.2
+mobi
+APScheduler==3.9.1
