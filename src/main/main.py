@@ -8,7 +8,7 @@ from bootstrap.bootstrap import start_service
 
 from FilesStorageResources import FilesStorageResources
 from MobiReader import MobiReader
-from Storage import Storage
+from bootstrap.storage import Storage
 
 config, logger, timezone = start_service()
 

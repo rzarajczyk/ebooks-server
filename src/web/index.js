@@ -21,9 +21,9 @@ $.get('/books', function (data) {
 })
 
 $('#search').keyup(function () {
-	var text = $('#search').val()
+	var text = $('#search').val().toLowerCase()
 	var filtered = window.DATA.filter(function (it) {
-		return it.title.indexOf(text) >= 0 || it.authors.indexOf(text) >= 0
+		return it.title.toLowerCase().indexOf(text) >= 0 || it.authors.toLowerCase().indexOf(text) >= 0
 	})
 	render(filtered)
 })
