@@ -19,7 +19,6 @@ $.get('/books', function (data) {
 	window.DATA = data
 	render(data)
 })
-
 $('#search').keyup(function () {
 	var text = $('#search').val().toLowerCase()
 	var filtered = window.DATA.filter(function (it) {

@@ -6,6 +6,7 @@ from actions_server import JsonGet, http_server, Redirect, StaticResources
 from apscheduler.schedulers.background import BackgroundScheduler
 from bootstrap.bootstrap import start_service
 
+from FileUpload import FileUpload
 from FilesStorageResources import FilesStorageResources
 from MobiReader import MobiReader
 from bootstrap.storage import Storage
@@ -57,13 +58,13 @@ def books(params):
         result.append(data)
     return result
 
-
 ACTIONS = [
     JsonGet('/books', books),
     Redirect('/', '/index.html'),
+    FileUpload('/process-upload'),
     FilesStorageResources('/mobi/', MOBI_STORAGE),
     FilesStorageResources('/cover/', COVER_STORAGE),
-    StaticResources('/', './src/web')
+    StaticResources('/', './src/web'),
 ]
 
 check_for_imports()
