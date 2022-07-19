@@ -32,7 +32,7 @@ def check_for_imports():
         with MobiReader(mobi_path) as reader:
             filename = os.path.basename(mobi_path)
             if filename in MOBI_STORAGE:
-                logger.warn(f'ebook {filename} already exists; overwriting!')
+                logger.warning(f'ebook {filename} already exists; overwriting!')
             MOBI_STORAGE[filename] = mobi_path
             COVER_STORAGE[f'{filename}.jpg'] = reader.cover_tmp_path
             METADATA_STORAGE[filename] = {
@@ -42,7 +42,7 @@ def check_for_imports():
                 'cover': f'{mobi_path}.jpg'
             }
     for file in os.listdir(IMPORT_DIR):
-        shutil.rmtree(f'{IMPORT_DIR}/{file}')
+        shutil.rmtree(f'{IMPORT_DIR}/{file}', ignore_errors=True)
 
 
 def books(params):
