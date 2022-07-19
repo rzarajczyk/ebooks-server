@@ -1,6 +1,7 @@
 import glob
 import os
 import shutil
+import re
 
 from actions_server import JsonGet, http_server, Redirect, StaticResources
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -27,10 +28,11 @@ scheduler = BackgroundScheduler(timezone=timezone)
 def check_for_imports():
     logger.info(f'Checking for new ebooks in {IMPORT_DIR}')
     os.makedirs(IMPORT_DIR, exist_ok=True)
-    for mobi_path in glob.glob(f'{IMPORT_DIR}/**/*.mobi', recursive=True):
+    mobi_paths = glob.glob(f'{IMPORT_DIR}/**/*.mobi', recursive=True)
+    for mobi_path in mobi_paths:
         logger.info(f'Found new ebook: {mobi_path}')
         with MobiReader(mobi_path) as reader:
-            filename = os.path.basename(mobi_path)
+            filename = re.sub('[^a-zA-Z0-9_.]', '-', os.path.basename(mobi_path))
             if filename in MOBI_STORAGE:
                 logger.warning(f'ebook {filename} already exists; overwriting!')
             MOBI_STORAGE[filename] = mobi_path
@@ -39,10 +41,11 @@ def check_for_imports():
                 'id': filename,
                 'title': reader.title,
                 'authors': reader.authors,
-                'cover': f'{mobi_path}.jpg'
+                'cover': f'{filename}.jpg'
             }
     for file in os.listdir(IMPORT_DIR):
         shutil.rmtree(f'{IMPORT_DIR}/{file}', ignore_errors=True)
+    logger.info('Import finished - imported %s files' % len(mobi_paths))
 
 
 def books(params):
