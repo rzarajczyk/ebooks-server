@@ -25,10 +25,14 @@ class MobiReader:
         for node in dom.getElementsByTagName('item'):
             if node.attributes['id'].value == 'cover_img':
                 return node.attributes['href'].value
+        for node in dom.getElementsByTagName('item'):
+            if node.attributes['id'].value == 'item1':
+                return node.attributes['href'].value
         return None
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        shutil.rmtree(self._dir)
+        # shutil.rmtree(self._dir)
+        pass
